@@ -15,7 +15,8 @@ contatos_df = pd.read_excel("bmgconsulta.xlsx")
 
 
 for i, cpf2 in enumerate(contatos_df['cpf']):
-    cpf2 = contatos_df.loc[i, "cpf"]
+
+    cpf = str(cpf2)
 
     username = 'vitor.helpvix'
     password = '70da6fe%'
@@ -27,7 +28,7 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
       'login': username,
       'senha': password,
       'codigoEntidade': codigoEntidade,
-      'cpf': cpf2,
+      'cpf': cpf,
 
 
     }
@@ -57,7 +58,7 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
                 'login': username,
                 'senha': password,
                 'codigoEntidade': '1581',
-                'cpf': cpf2,
+                'cpf': cpf,
                 'numeroContaInterna': numeroContaInterna,
                 'tipoSaque': 1,
                 'cpfImpedidoComissionar': False
@@ -71,7 +72,6 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
 #                 pass
 #             else:
             print(cpf2, valorSaqueMaximo)
-
 
 
 
