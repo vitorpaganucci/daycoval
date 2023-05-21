@@ -1,13 +1,11 @@
-## DEU CERTO, PEGANDO OS 4 CARTOES
-## COLOQUEI BA3 COM TELEFONE
-## primeiro ver cartao beneficio
-
 
 from zeep import Client
 import logging
 logging.getLogger('zeep.wsdl.bindings.soap').setLevel(logging.ERROR)
 from openpyxl import Workbook
+from flask import Flask
 
+app = Flask(__name__)
 
 # Cria uma nova planilha do Excel
 planilha = Workbook()
@@ -104,4 +102,5 @@ for i, cpf in enumerate(contatos_df['cpf']):
 
 planilha.save(filename="bmgconsultacompleto.xlsx")
 
-    
+if __name__ == '__main__':
+    app.run()
