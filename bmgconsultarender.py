@@ -17,20 +17,21 @@ planilha_ativa = planilha.active
 planilha_ativa.append(["CPF", "SALDO"])
 
 
-import pandas as pd
-contatos_df = pd.read_excel("bmgconsulta.xlsx")
+numeros = input('insira os cpfs aqui')
+cpf = numeros.split(' ')
+
+ncpf = len(cpf)
+print(ncpf)
 
 
-
-
-for i, cpf2 in enumerate(contatos_df['cpf']):
+for i in range(ncpf):
     try:
-        cpf2 = contatos_df.loc[i, "cpf"]
-
-        if '-' in cpf2 or '.' in cpf2:
+        cpf2 = cpf[i]
+        if '-' or '.' in cpf2:
             cpf2 = cpf2.replace("-","" ).replace(".","" )
         else:
             cpf2 = cpf2
+
 
 
         #cpf = '11867655691'
