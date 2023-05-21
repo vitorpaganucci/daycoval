@@ -23,9 +23,9 @@ contatos_df = pd.read_excel("bmgconsulta.xlsx")
 
 
 
-for i, cpf in enumerate(contatos_df['cpf']):
+for i, cpf2 in enumerate(contatos_df['cpf']):
     try:
-        cpf2 = contatos_df.loc[i, "ade"]
+        cpf2 = contatos_df.loc[i, "cpf"]
 
         if '-' in cpf2 or '.' in cpf2:
             cpf2 = cpf2.replace("-","" ).replace(".","" )
@@ -95,6 +95,7 @@ for i, cpf in enumerate(contatos_df['cpf']):
 
             
     except:
+        print('erro')
         pass
 
 
