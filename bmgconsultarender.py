@@ -7,15 +7,6 @@ from flask import Flask
 
 app = Flask(__name__)
 
-# Cria uma nova planilha do Excel
-planilha = Workbook()
-
-# Seleciona a planilha ativa
-planilha_ativa = planilha.active
-
-# Adiciona os títulos das colunas
-planilha_ativa.append(["CPF", "SALDO"])
-
 
 import pandas as pd
 contatos_df = pd.read_excel("bmgconsulta.xlsx")
@@ -81,10 +72,10 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
     #                 pass
     #             else:
                 print(cpf2, valorSaqueMaximo)
-                planilha_ativa.append([cpf2, valorSaqueMaximo])
+
     
     except:
-        print('erro')
+        print(cpf2, 'erro')
         pass
 
 
@@ -93,8 +84,6 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
 
 
 
-
-planilha.save(filename="bmgconsultacompleto.xlsx")
 
 if __name__ == '__main__':
     app.run()
