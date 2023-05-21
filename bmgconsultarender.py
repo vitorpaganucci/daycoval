@@ -75,7 +75,7 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
 
     
     except:
-        print(cpf2, 'erro')
+        print(cpf2, 'erro na consulta')
         pass
 
 
