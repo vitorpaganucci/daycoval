@@ -26,13 +26,6 @@ contatos_df = pd.read_excel("bmgconsulta.xlsx")
 for i, cpf2 in enumerate(contatos_df['cpf']):
     cpf2 = contatos_df.loc[i, "cpf"]
 
-    if '-' in cpf2 or '.' in cpf2:
-        cpf2 = cpf2.replace("-","" ).replace(".","" )
-    else:
-        cpf2 = cpf2
-
-
-    #cpf = '11867655691'
     username = 'vitor.helpvix'
     password = '70da6fe%'
     codigoEntidade = 1581
