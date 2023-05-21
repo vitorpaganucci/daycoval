@@ -96,6 +96,8 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
             
     except:
         print('erro')
+        planilha_ativa.append([cpf2, 'erro na consulta'])
+
         pass
 
 
