@@ -1,4 +1,5 @@
 import requests
+from requests.structures import CaseInsensitiveDict
 from zeep import Client
 import logging
 logging.getLogger('zeep.wsdl.bindings.soap').setLevel(logging.ERROR)
