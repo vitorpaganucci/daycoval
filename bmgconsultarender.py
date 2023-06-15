@@ -86,6 +86,7 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
                 user_data = {"saldo": valorSaqueMaximo, "cpf": cpf2}
 
                 response = requests.post(url=url, headers=headers, json=user_data)
+                print(response.json())
 
     except:
         print(cpf2, 'erro ao consultar')
