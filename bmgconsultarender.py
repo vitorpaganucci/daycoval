@@ -15,21 +15,27 @@ contatos_df = pd.read_excel("bmgconsulta.xlsx")
 
 
 
-for i, cpf2 in enumerate(contatos_df['cpf']):
+for i, cpf in enumerate(contatos_df['cpf']):
     try:
-        cpf = str(cpf2)
+        cpf2 = cpf[i]
+        
+        if '-' or '.' in cpf2:
+            cpf2 = cpf2.replace("-","" ).replace(".","" )
+        else:
+            cpf2 = cpf2
+
+
 
         username = 'vitor.helpvix'
         password = '70da6fe%'
-        codigoEntidade = 1581
 
         client = Client('https://ws1.bmgconsig.com.br/webservices/SaqueComplementar?wsdl')
 
         entrada = {
           'login': username,
           'senha': password,
-          'codigoEntidade': codigoEntidade,
-          'cpf': cpf,
+          'codigoEntidade': 1581,
+          'cpf': cpf2,
 
 
         }
@@ -42,55 +48,64 @@ for i, cpf2 in enumerate(contatos_df['cpf']):
         #numeroContaInterna = cartoesRetorno.numeroContaInterna
         #print(cartoesRetorno)
         numeroContaInterna = cartoesRetorno[0]['numeroContaInterna']
-        for i in range(3):
-            try:
-                numeroContaInterna = cartoesRetorno[i]['numeroContaInterna']
-                #print(numeroContaInterna)
 
-            except:
-                break
-        #print(i)
-
-            #print(cpf2, 'cliente possui dois beneficios')
         for i in range(2):
+            
             numeroContaInterna = cartoesRetorno[i]['numeroContaInterna']
-            with client.settings(strict=False):
-                entrada = {
-                    'login': username,
-                    'senha': password,
-                    'codigoEntidade': '1581',
-                    'cpf': cpf,
-                    'numeroContaInterna': numeroContaInterna,
-                    'tipoSaque': 1,
-                    'cpfImpedidoComissionar': False
-                }
-                result = client.service.buscarLimiteSaque(entrada)
-                #print(result)
+            mensagemImpedimento = cartoesRetorno[i]['mensagemImpedimento']
+            teste = mensagemImpedimento['_value_1']
+            if teste == None:
+                with client.settings(strict=False):
+                    entrada = {
+                        'login': username,
+                        'senha': password,
+                        'codigoEntidade': '1581',
+                        'cpf': cpf2,
+                        'numeroContaInterna': numeroContaInterna,
+                        'tipoSaque': 1,
+                        'cpfImpedidoComissionar': False
+                    }
+                    result = client.service.buscarLimiteSaque(entrada)
+                    #print(result)
 
-                valorSaqueMaximo = result.valorSaqueMaximo
-                valorSaqueMaximo = str(valorSaqueMaximo).replace(".", ",")
-    #             if valorSaqueMaximo == 0:
-    #                 pass
-    #             else:
-                print(cpf2, valorSaqueMaximo)
-                headers = CaseInsensitiveDict()
-                headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36"
-                headers["Accept"] = "application/json"
-                headers["apikey"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwa3RnaXd6d2xtYWFha3l3aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODM5MjAwNTgsImV4cCI6MTk5OTQ5NjA1OH0.BvmnwvNUcAnCXJTocXlX6kcSL44l5bgY4MGUFdEIKyw"
-                headers["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwa3RnaXd6d2xtYWFha3l3aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODM5MjAwNTgsImV4cCI6MTk5OTQ5NjA1OH0.BvmnwvNUcAnCXJTocXlX6kcSL44l5bgY4MGUFdEIKyw"
-
-
+                    limiteDisponivel = result.limiteDisponivel
+                    limiteDisponivel = str(limiteDisponivel).replace(".", ",")
+                    print(cpf2, limiteDisponivel, 'RMC')
+                    headers = CaseInsensitiveDict()
+                    headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36"
+                    headers["Accept"] = "application/json"
+                    headers["apikey"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwa3RnaXd6d2xtYWFha3l3aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODM5MjAwNTgsImV4cCI6MTk5OTQ5NjA1OH0.BvmnwvNUcAnCXJTocXlX6kcSL44l5bgY4MGUFdEIKyw"
+                    headers["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwa3RnaXd6d2xtYWFha3l3aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODM5MjAwNTgsImV4cCI6MTk5OTQ5NjA1OH0.BvmnwvNUcAnCXJTocXlX6kcSL44l5bgY4MGUFdEIKyw"
 
 
-                url = 'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/saque'
 
-                user_data = {"saldo": valorSaqueMaximo, "cpf": cpf2}
 
-                response = requests.post(url=url, headers=headers, json=user_data)
-                print(response.json())
+                    url = 'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/saque'
+
+                    user_data = {"saldo": valorSaqueMaximo, "cpf": cpf2}
+
+                    response = requests.post(url=url, headers=headers, json=user_data)
+                    print(response.json())
+                    
+                    
+                    
+            else:
+                pass
+
+
+        
+        
+
 
     except:
         print(cpf2, 'erro ao consultar')
+        
+        
+        
+        
+        
+        
+        
 
 
 
