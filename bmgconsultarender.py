@@ -98,7 +98,7 @@ for i, cpf in enumerate(contatos_df['cpf']):
 
 
     except:
-        print(cpf2, 'erro ao consultar')
+        print('erro ao consultar')
         
         
         
