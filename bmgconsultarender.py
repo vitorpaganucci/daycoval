@@ -1,12 +1,8 @@
-import requests
 from requests.structures import CaseInsensitiveDict
+import requests
 from zeep import Client
 import logging
 logging.getLogger('zeep.wsdl.bindings.soap').setLevel(logging.ERROR)
-from openpyxl import Workbook
-from flask import Flask
-
-app = Flask(__name__)
 
 
 import pandas as pd
@@ -18,6 +14,7 @@ contatos_df = pd.read_excel("bmgconsulta.xlsx")
 for i, cpf in enumerate(contatos_df['cpf']):
     try:
         cpf2 = str(contatos_df.loc[i, "cpf"])
+
         
         if '-' or '.' in cpf2:
             cpf2 = cpf2.replace("-","" ).replace(".","" )
@@ -25,7 +22,7 @@ for i, cpf in enumerate(contatos_df['cpf']):
             cpf2 = cpf2
 
 
-
+        #cpf = '11867655691'
         username = 'vitor.helpvix'
         password = '70da6fe%'
 
@@ -71,6 +68,7 @@ for i, cpf in enumerate(contatos_df['cpf']):
                     limiteDisponivel = result.limiteDisponivel
                     limiteDisponivel = str(limiteDisponivel).replace(".", ",")
                     print(cpf2, limiteDisponivel, 'RMC')
+                    
                     headers = CaseInsensitiveDict()
                     headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36"
                     headers["Accept"] = "application/json"
@@ -82,38 +80,16 @@ for i, cpf in enumerate(contatos_df['cpf']):
 
                     url = 'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/saque'
 
-                    user_data = {"saldo": valorSaqueMaximo, "cpf": cpf2}
+                    user_data = {"saldo": limiteDisponivel, "cpf": cpf2}
 
                     response = requests.post(url=url, headers=headers, json=user_data)
-                    print(response.json())
-                    
-                    
-                    
+                    print(response, response.json())
             else:
                 pass
-
-
-        
-        
-
-
-    except:
-        print(cpf, 'erro ao consultar')
-        
-        
-        
-        
-        
-        
-        
-
-
-
-
+                
+                
             
+    except:
+        pass
+    
 
-
-
-
-if __name__ == '__main__':
-    app.run()
