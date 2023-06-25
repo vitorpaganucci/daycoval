@@ -17,12 +17,11 @@ from zeep import Client
 import logging
 logging.getLogger('zeep.wsdl.bindings.soap').setLevel(logging.ERROR)
 
+
 contatos_df = pd.read_excel("bmgconsulta2.xlsx")
 
-
-
-
-for i, cpf in enumerate(contatos_df['cpf']):
+linhas_removidas = []
+for i, cpf in reversed(list(enumerate(contatos_df['cpf']))):
     try:
         cpf2 = str(contatos_df.loc[i, "cpf"])
         if '-' or '.' in cpf2:
@@ -30,6 +29,19 @@ for i, cpf in enumerate(contatos_df['cpf']):
         else:
             cpf2 = cpf2
 
+            
+        contatos_df = contatos_df.drop(contatos_df.index[i])
+        linhas_removidas.append(i)
+        
+        # Salvando o DataFrame atualizado em um arquivo temporário
+        contatos_df.to_excel("bmgconsulta3_temp.xlsx", index=False)
+
+        # Removendo o arquivo original
+        import os
+        os.remove("bmgconsulta2.xlsx")
+
+        # Renomeando o arquivo temporário para o nome do arquivo original
+        os.rename("bmgconsulta3_temp.xlsx", "bmgconsulta2.xlsx")
 
         #cpf = '11867655691'
         username = 'vitor.helpvix'
@@ -89,4 +101,3 @@ for i, cpf in enumerate(contatos_df['cpf']):
     except:
         pass
     
-
