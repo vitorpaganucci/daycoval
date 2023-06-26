@@ -17,8 +17,9 @@ from zeep import Client
 import logging
 logging.getLogger('zeep.wsdl.bindings.soap').setLevel(logging.ERROR)
 url = 'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/consulta?select=*'
-response_data = response.json()
+
 response = requests.get(url=url, headers=headers)
+response_data = response.json()
 print(response)
 #print(response.json())
 for item in response_data:
