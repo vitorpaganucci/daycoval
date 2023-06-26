@@ -16,34 +16,19 @@ url = 'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/saque'
 from zeep import Client
 import logging
 logging.getLogger('zeep.wsdl.bindings.soap').setLevel(logging.ERROR)
+url = 'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/consulta?select=*'
+response_data = response.json()
+response = requests.get(url=url, headers=headers)
+print(response)
+#print(response.json())
+for item in response_data:
 
+    
 
-contatos_df = pd.read_excel("bmgconsulta2.xlsx")
-
-linhas_removidas = []
-for i, cpf in reversed(list(enumerate(contatos_df['cpf']))):
     try:
-        cpf2 = str(contatos_df.loc[i, "cpf"])
-        if '-' or '.' in cpf2:
-            cpf2 = cpf2.replace("-","" ).replace(".","" )
-        else:
-            cpf2 = cpf2
+        cpf2 = item['cpf']
 
-            
-        contatos_df = contatos_df.drop(contatos_df.index[i])
-        linhas_removidas.append(i)
         
-        # Salvando o DataFrame atualizado em um arquivo temporário
-        contatos_df.to_excel("bmgconsulta3_temp.xlsx", index=False)
-
-        # Removendo o arquivo original
-        import os
-        os.remove("bmgconsulta2.xlsx")
-
-        # Renomeando o arquivo temporário para o nome do arquivo original
-        os.rename("bmgconsulta3_temp.xlsx", "bmgconsulta2.xlsx")
-
-        #cpf = '11867655691'
         username = 'vitor.helpvix'
         password = '70da6fe%'
 
@@ -93,11 +78,35 @@ for i, cpf in reversed(list(enumerate(contatos_df['cpf']))):
 
                     response = requests.post(url=url, headers=headers, json=user_data)
                     print(response, response.json())
+                    try:
+                        url = f'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/consulta?select=*&celular=eq.{cpf2}'
+
+                        user_data = { "celular": telefones}
+                        
+                        response = requests.delete(url=url, headers=headers, json=user_data)
+                    except:
+                        pass
             else:
+                try:
+                    url = f'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/consulta?select=*&celular=eq.{cpf2}'
+
+                    user_data = { "celular": telefones}
+                    
+                    response = requests.delete(url=url, headers=headers, json=user_data)
+                except:
+                    pass
                 pass
                 
                 
             
     except:
+        try:
+            url = f'https://qpktgiwzwlmaaakywheh.supabase.co/rest/v1/consulta?select=*&celular=eq.{cpf2}'
+    
+            user_data = { "celular": telefones}
+            
+            response = requests.delete(url=url, headers=headers, json=user_data)
+        except:
+            pass
         pass
     
