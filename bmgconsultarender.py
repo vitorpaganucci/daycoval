@@ -23,11 +23,11 @@ response_data = response.json()
 print(response)
 #print(response.json())
 for item in response_data:
-
+    cpf2 = item['cpf']
     
 
     try:
-        cpf2 = item['cpf']
+        
 
         
         username = 'vitor.helpvix'
